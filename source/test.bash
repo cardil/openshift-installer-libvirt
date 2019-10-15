@@ -6,11 +6,13 @@ include facts/ocp.bash
 
 function test.installer {
   local builddir imagename
-  builddir="${GOPATH}/src/github.com/openshift/installer"
+  builddir="build"
   pushd "${builddir}" || exit
-  imagename="$(executor.capture "bin/openshift-installer | grep "release image" | grep \"${OCP_VERSION}\"")"
+  logger.info "Testing version of build binary"
+  imagename="$(executor.capture "./openshift-install | grep "release image" | grep \"${OCP_VERSION}\"")"
   if [ -z "${imagename}" ]; then
     logger.error "Build binary should contain OCP version ${OCP_VERSION}!"
     exit 3
   fi
+  logger.debug "Version: ${imagename}"
 }

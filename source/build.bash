@@ -3,21 +3,29 @@
 include checkout.bash
 include logger.bash
 include exec/executor.bash
+include exec/package.bash
 include facts/ocp.bash
 
 function build {
   validate.golang-version
-  local version release builddir
+  local version release gobuilddir builddir
+  builddir="build"
   version="${OCP_VERSION:?}"
   release=$(__calculate_release "${version}")
   logger.info "Checkout of Openshift Installer - ${release}"
   checkout.installer "${release}"
 
+  logger.info "Installing prerequisites"
+  package.install 'libvirt-dev'
+
   logger.info "Building installer for ${version}"
-  builddir="${GOPATH}/src/github.com/openshift/installer"
-  logger.debug "Build dir: ${builddir}"
-  pushd "${builddir}" || exit
+  gobuilddir="${GOPATH}/src/github.com/openshift/installer"
+  logger.debug "Build dir: ${gobuilddir}"
+  pushd "${gobuilddir}" || exit
   executor.stream "RELEASE_IMAGE=quay.io/openshift-release-dev/ocp-release:${version} TAGS=libvirt hack/build.sh"
+  popd || exit
+  executor.stream "mkdir -p ${builddir}"
+  executor.stream "cp -v ${gobuilddir}/bin/openshift-install ${builddir}/openshift-install"
 }
 
 function __calculate_release {

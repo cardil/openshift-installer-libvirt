@@ -1,25 +1,30 @@
----
 language: go
 dist: trusty
 go:
- - 1.13.x
+- 1.13.x
 branches:
   only:
-   - master
-   - develop
-   - "/^v\\d/"
+  - master
+  - develop
+  - "/^v\\d/"
 stages:
-  - build
-  - test
-  - deploy
+- build
+- test
+- deploy
 jobs:
   include:
-    - stage: build
-      name: "Build binary"
-      script: ./build.bash
-    - stage: test
-      name: "Test binary"
-      script: ./build.bash
-    - stage: deploy
-      name: "Deploy to BinTray"
-      script: ./deploy.bash
+  - stage: build
+    name: Build binary
+    script: "./build.bash"
+  - stage: test
+    name: Test binary
+    script: "./build.bash"
+  - stage: deploy
+    name: Prepare deployment for BinTray
+    script: "./deploy.bash"
+deploy:
+  provider: bintray
+  file: build/bintray.json
+  user: cardil
+  key:
+    secure: thblIXj4n46hbvGp22CMfvKW/5RxiCQH2+UduJ4cN80c9sGiO4ubUD+kHqArt6wICp+fY4s3yrKgqCv0f2UxmxuN36OmEp+PGSjKFIJDPWVFdUxaOa6Qw0Jg1968G4zy1xHMSswUfLQa59vRzel4qm+urtVVn4JqQiOr8mgcWzOv9+NXaORvat92WRHEPqnmGZXC+6Ll2ACe1w0NIhsM/nPd9EF24dlLZZFiwvuFWl0vmzNkTK2m/930jLQzwrJPMNmUPzAFt/+5y0luUqHZxB0Jh7TaBFrTxrW5Y+0djs4+zlJhdOHz1u4b96aAt012rRpu41vihQTW1Fs+0rEDNtns4mjupJZVvQDiWpfhZ0lh+20CMQLYtc68kX3BBGvqtQsRO6EGUYTT1dmYwy9vA3x0a800Yl0y2xyMYr7QyEQ/++URJDNyUQ025RZTFE31TeuFF+D5cPIseUOe+4gfZRCXY2Trj2SjLXt44VwngjACM/zZrcCwqGZR8fLfIgUrQDzUuuxMk4wKx+1SCrNjJXTrS2JrFjm93jY296B99wcOOLdYEhgydR1tGadR45PR/xBYHZMLkgMuhYWdbKP4D5mWod54uePOBJK8J9l5g+SIriuXaXCu+Y2lOK1fFdiZFmHLiXpDIlaC3cfY0284p1c3E6bqGVcHp3ZFAqTVOwc=

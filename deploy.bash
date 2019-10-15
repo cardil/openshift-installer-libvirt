@@ -12,10 +12,10 @@ loader_flag "${BASH_SOURCE[0]}"
 loader_addpath "${REPODIR}/source"
 
 include ui/welcome.bash
-include test.bash
+include deploy.bash
 
 loader_finish
 
 set -u
 
-test.installer
+deploy.create-manifest
