@@ -1,16 +1,18 @@
 language: go
 dist: trusty
 go:
-- 1.13.x
+  - 1.13.x
 branches:
   only:
   - master
   - develop
   - "/^v\\d/"
 stages:
-- build
-- test
-- deploy
+  - build
+  - test
+  - deploy
+before_install:
+  - sudo apt-get install -y libvirt-dev
 jobs:
   include:
   - stage: build
