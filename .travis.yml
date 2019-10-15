@@ -1,0 +1,25 @@
+---
+language: go
+dist: trusty
+go:
+ - 1.13.x
+branches:
+  only:
+   - master
+   - develop
+   - "/^v\\d/"
+stages:
+  - build
+  - test
+  - deploy
+jobs:
+  include:
+    - stage: build
+      name: "Build binary"
+      script: ./build.bash
+    - stage: test
+      name: "Test binary"
+      script: ./build.bash
+    - stage: deploy
+      name: "Deploy to BinTray"
+      script: ./deploy.bash
