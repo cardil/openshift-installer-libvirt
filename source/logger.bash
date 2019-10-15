@@ -35,7 +35,7 @@ function logger.info {
   local message
   message="$*"
   if logger.__should-print 'INFO'; then
-    echo -e "${COLOR_LIGHT_GRAY}INFO: ${message}${COLOR_NC}" 1>&2
+    echo -e "${COLOR_GREEN}INFO: ${message}${COLOR_NC}" 1>&2
   fi
 }
 

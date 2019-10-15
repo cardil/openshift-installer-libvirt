@@ -14,9 +14,11 @@ function build {
   release=$(__calculate_release "${version}")
   logger.info "Checkout of Openshift Installer - ${release}"
   checkout.installer "${release}"
+  logger.success "Checkout of ${release} was succesful"
 
   logger.info "Installing prerequisites"
   package.install 'libvirt-dev'
+  logger.success "Installation of prerequisites was sucessful"
 
   logger.info "Building installer for ${version}"
   gobuilddir="${GOPATH}/src/github.com/openshift/installer"
@@ -26,6 +28,7 @@ function build {
   popd || exit
   executor.stream "mkdir -p ${builddir}"
   executor.stream "cp -v ${gobuilddir}/bin/openshift-install ${builddir}/openshift-install"
+  logger.success "openshift-install binary was build for version ${version}"
 }
 
 function __calculate_release {

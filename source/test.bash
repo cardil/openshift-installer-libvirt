@@ -14,5 +14,7 @@ function test.installer {
     logger.error "Build binary should contain OCP version ${OCP_VERSION}!"
     exit 3
   fi
+  popd || exit
+  logger.success "Proper version found: ${OCP_VERSION}"
   logger.debug "Version: ${imagename}"
 }

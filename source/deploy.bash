@@ -8,6 +8,7 @@ function deploy.create-manifest {
   local builddir now
   builddir="build"
   pushd "${builddir}" || exit
+  logger.info "Creating deployment descriptor for Bintray"
   now=$(date +%Y-%m-%d)
   cat > bintray.json <<EOF
 {
@@ -32,11 +33,22 @@ function deploy.create-manifest {
       "gpgSign": false
   },
 
-  "files":
-      [
-      {"includePattern": "build/openshift-installer", "uploadPattern": "\$1"}
-      ],
+  "files": [
+    {
+      "includePattern": "build/openshift-install",
+      "uploadPattern": "openshift-install",
+      "matrixParams": { "override": 1 }
+    }
+  ],
   "publish": true
 }
 EOF
+  popd || exit
+  if [ -f "${builddir}/bintray.json" ]; then
+    executor.stream "stat \"${builddir}/bintray.json\""
+    logger.success "Deployment descriptor created"
+  else
+    logger.error 'Deployment descriptor not found!'
+    exit 4
+  fi
 }
